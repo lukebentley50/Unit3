@@ -1,12 +1,31 @@
 package Lesson8.studentbrowser;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class StudentBrowser extends javax.swing.JFrame {
     Student[] Students=new Student[10];
     int size=0;
     int currentpos=0;
     public StudentBrowser() {
         initComponents();
+        pop();
+        ShowStudent();
     }
 
+    public void pop(){
+        try {
+            size=5;
+            Students[0]=new Student("Bob",new int[]{43,53,70});
+            Students[1]=new Student("Sue",new int[]{76,91,87});
+            Students[2]=new Student("Zack",new int[]{98,96,89});
+            Students[3]=new Student("Logan",new int[]{35,48,25});
+            Students[4]=new Student("Bobby",new int[]{86,79,87});
+        } catch (IOException ex) {
+            Logger.getLogger(StudentBrowser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public void ShowStudent(){
         namedisplay.setText(Students[currentpos].getName());
@@ -14,6 +33,8 @@ public class StudentBrowser extends javax.swing.JFrame {
         test2display.setText(String.valueOf(Students[currentpos].getScore(2)));
         test3display.setText(String.valueOf(Students[currentpos].getScore(3)));
         averagedisplay.setText(String.valueOf(Students[currentpos].getAverage()));
+        scount.setText("Students:"+size);
+        spos.setText("Current Index:"+(currentpos+1));
     }
     /**
      * This method is called from within the constructor to initialize the form.
