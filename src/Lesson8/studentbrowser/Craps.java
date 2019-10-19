@@ -13,10 +13,12 @@ public class Craps extends javax.swing.JFrame {
 
     GameController game;
     int money;
+    boolean allowgame = true;
+
     public Craps() {
         initComponents();
-        game=new GameController(p1.getGraphics(),p2.getGraphics());
-        money=100;
+        game = new GameController(p1.getGraphics(), p2.getGraphics());
+        money = 100;
     }
 
     /**
@@ -33,7 +35,7 @@ public class Craps extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         rollbtn = new javax.swing.JButton();
         quitbtn = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        MoneyLabel = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         output = new javax.swing.JTextArea();
 
@@ -75,6 +77,11 @@ public class Craps extends javax.swing.JFrame {
         });
 
         quitbtn.setText("Quit");
+        quitbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,11 +104,11 @@ public class Craps extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTextField1.setBackground(new java.awt.Color(102, 102, 102));
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(240, 240, 240));
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("Money:$100");
+        MoneyLabel.setBackground(new java.awt.Color(102, 102, 102));
+        MoneyLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        MoneyLabel.setForeground(new java.awt.Color(240, 240, 240));
+        MoneyLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        MoneyLabel.setText("Money:$100");
 
         output.setColumns(20);
         output.setRows(5);
@@ -121,7 +128,7 @@ public class Craps extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                            .addComponent(MoneyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
@@ -134,7 +141,7 @@ public class Craps extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(MoneyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(p2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(p1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,23 +153,35 @@ public class Craps extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rollbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollbtnActionPerformed
-        if(game.isNewGame()){
-            output.setText("NEW GAME\n========");
-            money-=5;
-        }
-        game.roll();
-        output.append("\nYou rolled a "+game.getTotal());
-        if(game.hasWon()){
-            output.append("\nYou won! - Click roll to start a new Game");
-            money+=10;
-            game=new GameController(p1.getGraphics(),p2.getGraphics());
-        }else if(game.hasLost()){
-            output.append("\nYou lost - Click roll to start a new Game");
-            game=new GameController(p1.getGraphics(),p2.getGraphics());
-        }else{
-            output.append(string);
+        if (allowgame) {
+            if (game.isNewGame() && money > 5) {
+                output.setText("NEW GAME\n========");
+                money -= 5;
+            }
+            game.roll();
+            output.append("\nYou rolled a " + game.getTotal());
+            if (game.hasWon()) {
+                output.append("\nYou won! - Click roll to start a new Game");
+                money += 10;
+                game = new GameController(p1.getGraphics(), p2.getGraphics());
+            } else if (game.hasLost()) {
+                output.append("\nYou lost - Click roll to start a new Game");
+                game = new GameController(p1.getGraphics(), p2.getGraphics());
+                if (money == 0) {
+                    allowgame = false;
+                }
+            } else {
+                output.append("\nNo effect - roll a " + game.getPoint() + " to win or a 7 to lose");
+            }
+            MoneyLabel.setText("Money:$" + money);
+        } else {
+            output.setText("You don't have any money.");
         }
     }//GEN-LAST:event_rollbtnActionPerformed
+
+    private void quitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitbtnActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_quitbtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,9 +219,9 @@ public class Craps extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField MoneyLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextArea output;
     private javax.swing.JPanel p1;
     private javax.swing.JPanel p2;

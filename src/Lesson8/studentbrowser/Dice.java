@@ -21,6 +21,7 @@ public class Dice {
     public void roll() {
         if (on == true) {
             num = (int) (Math.random() * 6) + 1;
+            System.out.println(num);
             draw();
         }
     }

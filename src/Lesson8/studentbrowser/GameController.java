@@ -4,8 +4,8 @@ import java.awt.Graphics;
 
 public class GameController {
     private Dice d1,d2;
+    boolean newGame;
     private int rollnum,point;
-    private boolean newGame;
     public GameController(Graphics g1,Graphics g2){
         d1=new Dice(g1);
         d2=new Dice(g2);
@@ -29,6 +29,7 @@ public class GameController {
     }
     
     public int getTotal(){
+        System.out.println(d1.getNum());
         return d1.getNum()+d2.getNum();
     }
     
