@@ -19,6 +19,8 @@ public class GameController {
         rollnum++;
         d1.roll();
         d2.roll();
+        d1.draw();
+        d2.draw();
         if(rollnum==1){
             point=getTotal();
         }
@@ -29,7 +31,7 @@ public class GameController {
     }
     
     public int getTotal(){
-        System.out.println(d1.getNum());
+        System.out.println("\n-------\n"+d1.getNum()+"\n"+d2.getNum());
         return d1.getNum()+d2.getNum();
     }
     
@@ -51,5 +53,10 @@ public class GameController {
             return getTotal()==7;
         }
         return false;
+    }
+    
+    public void refresh(){
+        d1.draw();
+        d2.draw();
     }
 }

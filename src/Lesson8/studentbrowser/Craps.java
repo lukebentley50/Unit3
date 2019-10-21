@@ -110,6 +110,7 @@ public class Craps extends javax.swing.JFrame {
         MoneyLabel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         MoneyLabel.setText("Money:$100");
 
+        output.setEditable(false);
         output.setColumns(20);
         output.setRows(5);
         jScrollPane1.setViewportView(output);
@@ -153,6 +154,7 @@ public class Craps extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rollbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rollbtnActionPerformed
+        rollbtn.setEnabled(false);
         if (allowgame) {
             if (game.isNewGame() && money > 5) {
                 output.setText("NEW GAME\n========");
@@ -177,6 +179,8 @@ public class Craps extends javax.swing.JFrame {
         } else {
             output.setText("You don't have any money.");
         }
+        rollbtn.setEnabled(true);
+        game.refresh();
     }//GEN-LAST:event_rollbtnActionPerformed
 
     private void quitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitbtnActionPerformed
