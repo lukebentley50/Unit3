@@ -1,4 +1,4 @@
-package Lesson8.studentbrowser;
+package Lesson8.Craps;
 
 import java.awt.Graphics;
 
